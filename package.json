@@ -1,0 +1,12 @@
+{
+    "name": "example",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^16"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.38.0",
+        "@pulumi/random": "^4.8.1",
+        "@pulumi/azure-native": "^1.68.2"
+    }
+}
