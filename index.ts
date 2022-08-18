@@ -38,6 +38,7 @@ const postgres = new dbforpostgresql.Server("postgres", {
     },
     // Development (aka Burstable) sku.
     // 1 vCores, 2 GiB RAM, 32 GiB storage.
+    // see az postgres flexible-server list-skus --output table --location northeurope
     // see https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku
     sku: {
         tier: "Burstable",
