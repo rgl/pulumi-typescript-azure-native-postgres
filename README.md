@@ -31,7 +31,7 @@ choco install -y nodejs-lts --version 16.17.0
 choco install -y postgresql14 --ia '--enable-components commandlinetools'
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
-npm install
+npm ci
 ```
 
 Login into Azure:
