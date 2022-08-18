@@ -17,7 +17,6 @@ const postgresUserPassword = new random.RandomPassword("postgres", {
 
 const example = new azure.resources.ResourceGroup("example");
 
-// TODO how to set the zone in this Server resource?
 // TODO why is this failing?
 // NB a similar terraform example is working fine at https://github.com/rgl/terraform-azure-postgres.
 //
@@ -30,6 +29,7 @@ const example = new azure.resources.ResourceGroup("example");
 const postgres = new dbforpostgresql.Server("postgres", {
     resourceGroupName: example.name,
     location: example.location,
+    availabilityZone: zone,
     version: "14",
     administratorLogin: "postgres",
     administratorLoginPassword: postgresUserPassword.result,

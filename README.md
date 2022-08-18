@@ -112,6 +112,7 @@ pulumi destroy
 # Reference
 
 * [Pulumi Azure Native provider API documentation](https://www.pulumi.com/registry/packages/azure-native/api-docs/)
+* [Azure rest-api specs postgresql examples](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples)
 * [Azure Database for PostgreSQL product page](https://azure.microsoft.com/en-us/services/postgresql/)
 * [Azure Database for PostgreSQL pricing page](https://azure.microsoft.com/en-us/pricing/details/postgresql/flexible-server/)
 * [Overview - Azure Database for PostgreSQL - Flexible Server](https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/overview)
