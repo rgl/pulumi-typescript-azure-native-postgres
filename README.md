@@ -61,14 +61,23 @@ $env:PULUMI_CONFIG_PASSPHRASE = 'password'
 Provision:
 
 ```powershell
+# login.
 . .\secrets.ps1
 pulumi login
 pulumi whoami -v
+# create the dev stack.
 pulumi stack init dev
+# set the location.
 pulumi config set azure-native:location northeurope
+# set the zone.
+# show the available zones in the given location.
+az postgres flexible-server list-skus `
+  --location "$(pulumi config get azure-native:location)" `
+  | jq -r '.[].zone'
 # NB make sure the selected location has this zone available. when its not
 #    available, the deployment will fail with InternalServerError.
 pulumi config set example:zone 1
+# provision.
 pulumi up
 ```
 
