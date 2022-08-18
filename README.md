@@ -16,7 +16,6 @@ For further managing the PostgreSQL instance, you could use:
 
 For equivalent examples see:
 
-* [pulumi azure-native](https://github.com/rgl/pulumi-typescript-azure-native-postgres)
 * [pulumi google-native](https://github.com/rgl/pulumi-typescript-google-postgres)
 * [terraform azurerm](https://github.com/rgl/terraform-azure-postgres)
 * [terraform gcp](https://github.com/rgl/terraform-gcp-cloud-sql-postgres)
