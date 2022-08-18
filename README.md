@@ -65,7 +65,7 @@ Provision:
 pulumi login
 pulumi whoami -v
 pulumi stack init dev
-pulumi config set azure:location northeurope
+pulumi config set azure-native:location northeurope
 # NB make sure the selected location has this zone available. when its not
 #    available, the deployment will fail with InternalServerError.
 pulumi config set example:zone 1
