@@ -17,15 +17,6 @@ const postgresUserPassword = new random.RandomPassword("postgres", {
 
 const example = new azure.resources.ResourceGroup("example");
 
-// TODO why is this failing?
-// NB a similar terraform example is working fine at https://github.com/rgl/terraform-azure-postgres.
-//
-// Diagnostics:
-//   pulumi:pulumi:Stack (example-dev):
-//     error: update failed
-//
-//   azure-native:dbforpostgresql/v20210601:Server (postgres):
-//     resource partially created but read failed autorest/azure: Service returned an error. Status=404 Code="ResourceNotFound" Message="The requested resource of type 'Microsoft.DBforPostgreSQL/flexibleServers' with name 'postgrescb617a17' was not found.": Code="InternalServerError" Message="An unexpected error occured while processing the request. Tracking ID: 'a0a86aa3-6a27-4d9d-8b1d-b2b09da3d3f0'"
 const postgres = new dbforpostgresql.Server("postgres", {
     resourceGroupName: example.name,
     location: example.location,
@@ -36,16 +27,17 @@ const postgres = new dbforpostgresql.Server("postgres", {
     backup: {
         backupRetentionDays: 7,
     },
-    // Development (aka Burstable) sku.
-    // 1 vCores, 2 GiB RAM, 32 GiB storage.
     // see az postgres flexible-server list-skus --output table --location northeurope
     // see https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku
+    // see https://azure.microsoft.com/en-us/pricing/details/postgresql/server/
     sku: {
-        tier: "Burstable",
-        name: "Standard_B1ms",
+        tier: "GeneralPurpose",
+        name: "Standard_D2ds_v4", // 2 vCore. 8 GiB RAM.
     },
+    storage: {
+        storageSizeGB: 32,
+    }
 });
 
 export const fqdn = postgres.fullyQualifiedDomainName;
-export const host = postgres.name;
 export const password = postgresUserPassword.result;

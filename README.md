@@ -78,7 +78,12 @@ az postgres flexible-server list-skus `
 #    available, the deployment will fail with InternalServerError.
 pulumi config set example:zone 1
 # provision.
+# NB creating a PostgreSQL Flexible Server is very finicky. it might fail with
+#    InternalServerError because there is no capacity in the given region. try
+#    modifying the region and sku to see if it helps.
 pulumi up
+# provision in troubleshoot mode.
+#pulumi up --logtostderr --logflow -v=9 2>pulumi.log
 ```
 
 Connect to it:
@@ -93,7 +98,7 @@ $env:PGSSLMODE = 'verify-full'
 $env:PGSSLROOTCERT = $cacertsPath
 $env:PGHOST = pulumi stack output fqdn
 $env:PGDATABASE = 'postgres'
-$env:PGUSER = "postgres@$(pulumi stack output host)"
+$env:PGUSER = 'postgres'
 $env:PGPASSWORD = pulumi stack output password --show-secrets
 psql
 ```
@@ -118,8 +123,9 @@ Destroy everything:
 pulumi destroy
 ```
 
-# Reference
+# References
 
+* [Pulumi Troubleshooting](https://www.pulumi.com/docs/support/troubleshooting/)
 * [Pulumi Azure Native provider API documentation](https://www.pulumi.com/registry/packages/azure-native/api-docs/)
 * [Azure rest-api specs postgresql examples](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples)
 * [Azure Database for PostgreSQL product page](https://azure.microsoft.com/en-us/services/postgresql/)
