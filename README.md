@@ -20,6 +20,116 @@ For equivalent examples see:
 * [terraform azurerm](https://github.com/rgl/terraform-azure-postgres)
 * [terraform gcp](https://github.com/rgl/terraform-gcp-cloud-sql-postgres)
 
+# Table Of Contents
+
+* [Usage (Ubuntu)](#usage-ubuntu)
+* [Usage (Windows)](#usage-windows)
+* [References](#references)
+
+# Usage (Ubuntu)
+
+Install dependencies:
+
+* `az` (see [my ubuntu ansible azure-client role](https://github.com/rgl/my-ubuntu-ansible-playbooks/tree/main/roles/azure-client))
+* `node` (see [my ubuntu ansible nodejs role](https://github.com/rgl/my-ubuntu-ansible-playbooks/tree/main/roles/nodejs))
+* `pulumi` (see [my ubuntu ansible pulumi role](https://github.com/rgl/my-ubuntu-ansible-playbooks/tree/main/roles/pulumi))
+
+Install more dependencies:
+
+```bash
+sudo apt-get install -y postgresql-client-14
+npm ci
+```
+
+Login into Azure:
+
+```bash
+az login
+```
+
+List the subscriptions and select one of them:
+
+```bash
+az account list --all
+az account set --subscription=<id>
+az account show
+```
+
+Set the environment:
+
+```bash
+cat >secrets.sh <<'EOF'
+export PULUMI_SKIP_UPDATE_CHECK='true'
+export PULUMI_BACKEND_URL="file://$PWD" # NB pulumi will create the .pulumi sub-directory.
+export PULUMI_CONFIG_PASSPHRASE='password'
+EOF
+```
+
+Provision:
+
+```bash
+# login.
+source secrets.sh
+pulumi login
+pulumi whoami -v
+# create the dev stack.
+pulumi stack init dev
+# set the location.
+pulumi config set azure-native:location northeurope
+# set the zone.
+# show the available zones in the given location.
+az postgres flexible-server list-skus \
+  --location "$(pulumi config get azure-native:location)" \
+  | jq -r '.[].zone'
+# NB make sure the selected location has this zone available. when its not
+#    available, the deployment will fail with InternalServerError.
+pulumi config set example:zone 1
+# provision.
+# NB creating a PostgreSQL Flexible Server is very finicky. it might fail with
+#    InternalServerError because there is no capacity in the given region. try
+#    modifying the region and sku to see if it helps.
+pulumi up
+# provision in troubleshoot mode.
+#pulumi up --logtostderr --logflow -v=9 2>pulumi.log
+```
+
+Connect to it:
+
+```bash
+# see https://www.postgresql.org/docs/14/libpq-envars.html
+# see https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
+cacerts_url='https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
+cacerts_path="$(basename "$cacerts_url")"
+wget "$cacerts_url" -O "$cacerts_path"
+export PGSSLMODE='verify-full'
+export PGSSLROOTCERT="$cacerts_path"
+export PGHOST="$(pulumi stack output fqdn)"
+export PGDATABASE='postgres'
+export PGUSER='postgres'
+export PGPASSWORD="$(pulumi stack output password --show-secrets)"
+psql
+```
+
+Execute example queries:
+
+```sql
+select version();
+select current_user;
+select case when ssl then concat('YES (', version, ')') else 'NO' end as ssl from pg_stat_ssl where pid=pg_backend_pid();
+```
+
+Exit the `psql` session:
+
+```sql
+exit
+```
+
+Destroy everything:
+
+```bash
+pulumi destroy
+```
+
 # Usage (Windows)
 
 Install the dependencies:

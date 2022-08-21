@@ -2,5 +2,6 @@ bin/
 node_modules/
 .pulumi/
 Pulumi.*.yaml
-secrets.ps1
+secrets*
 *.pem
+*.log
