@@ -39,5 +39,12 @@ const postgres = new dbforpostgresql.Server("postgres", {
     }
 });
 
+new dbforpostgresql.FirewallRule("all", {
+    resourceGroupName: example.name,
+    serverName: postgres.name,
+    startIpAddress: "0.0.0.0",
+    endIpAddress: "255.255.255.255",
+});
+
 export const fqdn = postgres.fullyQualifiedDomainName;
 export const password = postgresUserPassword.result;
