@@ -24,6 +24,8 @@ For equivalent examples see:
 
 * [Usage (Ubuntu)](#usage-ubuntu)
 * [Usage (Windows)](#usage-windows)
+* [Troubleshooting](#troubleshooting)
+  * [HTTP proxy](#http-proxy)
 * [References](#references)
 
 # Usage (Ubuntu)
@@ -89,7 +91,8 @@ pulumi config set example:zone 1
 #    InternalServerError because there is no capacity in the given region. try
 #    modifying the region and sku to see if it helps.
 pulumi up
-# provision in troubleshoot mode.
+# provision in troubleshooting mode.
+# NB for more information see the troubleshooting section in this document.
 #pulumi up --logtostderr --logflow -v=9 2>pulumi.log
 ```
 
@@ -192,7 +195,8 @@ pulumi config set example:zone 1
 #    InternalServerError because there is no capacity in the given region. try
 #    modifying the region and sku to see if it helps.
 pulumi up
-# provision in troubleshoot mode.
+# provision in troubleshooting mode.
+# NB for more information see the troubleshooting section in this document.
 #pulumi up --logtostderr --logflow -v=9 2>pulumi.log
 ```
 
@@ -231,6 +235,32 @@ Destroy everything:
 
 ```powershell
 pulumi destroy
+```
+
+# Troubleshooting
+
+See the inner-sections for troubleshooting.
+
+For more information see the [Pulumi Troubleshooting](https://www.pulumi.com/docs/support/troubleshooting/) page.
+
+## HTTP proxy
+
+Install an HTTP proxy like [HTTP Toolkit](https://github.com/httptoolkit/httptoolkit-desktop).
+
+Configure the environment to use the http proxy:
+
+```bash
+sudo cp ~/Downloads/http-toolkit-ca-certificate.crt /usr/local/share/ca-certificates/
+sudo update-ca-certificates
+export http_proxy=http://127.0.0.1:8000
+export https_proxy=http://127.0.0.1:8000
+export no_proxy='localhost,127.0.0.1'
+```
+
+Provision in troubleshooting mode:
+
+```bash
+pulumi up --logtostderr --logflow -v=9 2>pulumi.log
 ```
 
 # References
