@@ -12,6 +12,7 @@ This will:
 
 For further managing the PostgreSQL instance, you could use:
 
+* The [postgresql Pulumi Package](https://www.pulumi.com/registry/packages/postgresql/).
 * The [community.postgresql Ansible Collection](https://galaxy.ansible.com/community/postgresql) as in [rgl/ansible-init-postgres](https://github.com/rgl/ansible-init-postgres).
 
 For equivalent examples see:
