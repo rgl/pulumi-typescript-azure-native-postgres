@@ -29,7 +29,7 @@ For equivalent examples see:
   * [HTTP proxy](#http-proxy)
 * [References](#references)
 
-# Usage (Ubuntu)
+# Usage (Ubuntu 22.04)
 
 Install dependencies:
 
@@ -101,7 +101,7 @@ pulumi up
 Connect to it:
 
 ```bash
-# see https://www.postgresql.org/docs/14/libpq-envars.html
+# see https://www.postgresql.org/docs/15/libpq-envars.html
 # see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 cacerts_url='https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 cacerts_path="$(basename "$cacerts_url")"
@@ -143,7 +143,7 @@ Install the dependencies:
 choco install -y azure-cli --version 2.51.0
 choco install -y pulumi --version 3.78.1
 choco install -y nodejs-lts --version 18.17.1
-choco install -y postgresql14 --ia '--enable-components commandlinetools'
+choco install -y postgresql15 --ia '--enable-components commandlinetools'
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
 npm ci
@@ -204,7 +204,7 @@ pulumi up
 Connect to it:
 
 ```powershell
-# see https://www.postgresql.org/docs/14/libpq-envars.html
+# see https://www.postgresql.org/docs/15/libpq-envars.html
 # see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 $cacertsUrl = 'https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 $cacertsPath = Split-Path -Leaf $cacertsUrl

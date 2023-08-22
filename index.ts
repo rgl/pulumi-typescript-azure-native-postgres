@@ -21,7 +21,7 @@ const postgres = new dbforpostgresql.Server("postgres", {
     resourceGroupName: example.name,
     location: example.location,
     availabilityZone: zone,
-    version: "14",
+    version: "15",
     administratorLogin: "postgres",
     administratorLoginPassword: postgresUserPassword.result,
     backup: {
