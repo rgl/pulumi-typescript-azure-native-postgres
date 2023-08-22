@@ -83,7 +83,8 @@ pulumi config set azure-native:location northeurope
 # show the available zones in the given location.
 az postgres flexible-server list-skus \
   --location "$(pulumi config get azure-native:location)" \
-  | jq -r '.[].zone'
+  | jq -r '.[].supportedServerEditions[].supportedServerSkus[].supportedZones[]' \
+  | sort -u
 # NB make sure the selected location has this zone available. when its not
 #    available, the deployment will fail with InternalServerError.
 pulumi config set example:zone 1
@@ -101,7 +102,7 @@ Connect to it:
 
 ```bash
 # see https://www.postgresql.org/docs/14/libpq-envars.html
-# see https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
+# see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 cacerts_url='https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 cacerts_path="$(basename "$cacerts_url")"
 wget "$cacerts_url" -O "$cacerts_path"
@@ -139,9 +140,9 @@ pulumi destroy
 Install the dependencies:
 
 ```powershell
-choco install -y azure-cli --version 2.39.0
-choco install -y pulumi --version 3.38.0
-choco install -y nodejs-lts --version 16.17.0
+choco install -y azure-cli --version 2.51.0
+choco install -y pulumi --version 3.78.1
+choco install -y nodejs-lts --version 18.17.1
 choco install -y postgresql14 --ia '--enable-components commandlinetools'
 Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1"
 Update-SessionEnvironment
@@ -186,8 +187,7 @@ pulumi config set azure-native:location northeurope
 # set the zone.
 # show the available zones in the given location.
 az postgres flexible-server list-skus `
-  --location "$(pulumi config get azure-native:location)" `
-  | jq -r '.[].zone'
+  --location "$(pulumi config get azure-native:location)"
 # NB make sure the selected location has this zone available. when its not
 #    available, the deployment will fail with InternalServerError.
 pulumi config set example:zone 1
@@ -205,7 +205,7 @@ Connect to it:
 
 ```powershell
 # see https://www.postgresql.org/docs/14/libpq-envars.html
-# see https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
+# see https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl
 $cacertsUrl = 'https://dl.cacerts.digicert.com/DigiCertGlobalRootCA.crt.pem'
 $cacertsPath = Split-Path -Leaf $cacertsUrl
 (New-Object Net.WebClient).DownloadFile($cacertsUrl, $cacertsPath)
@@ -268,10 +268,10 @@ pulumi up --logtostderr --logflow -v=9 2>pulumi.log
 
 * [Pulumi Troubleshooting](https://www.pulumi.com/docs/support/troubleshooting/)
 * [Pulumi Azure Native provider API documentation](https://www.pulumi.com/registry/packages/azure-native/api-docs/)
-* [Azure rest-api specs postgresql examples](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples)
+* [Azure rest-api specs postgresql examples](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples)
 * [Azure Database for PostgreSQL product page](https://azure.microsoft.com/en-us/services/postgresql/)
 * [Azure Database for PostgreSQL pricing page](https://azure.microsoft.com/en-us/pricing/details/postgresql/flexible-server/)
-* [Overview - Azure Database for PostgreSQL - Flexible Server](https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/overview)
-  * [Comparison chart - Azure Database for PostgreSQL Single Server and Flexible Server](https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server)
-* [Azure Database for PostgreSQL Flexible Server SKUs](https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku)
-* [Encrypted connectivity using Transport Layer Security in Azure Database for PostgreSQL - Flexible Server](https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl)
+* [Overview - Azure Database for PostgreSQL - Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/overview)
+  * [Comparison chart - Azure Database for PostgreSQL Single Server and Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server)
+* [Azure Database for PostgreSQL Flexible Server SKUs](https://learn.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2022-12-01/flexibleservers#sku)
+* [Encrypted connectivity using Transport Layer Security in Azure Database for PostgreSQL - Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-connect-tls-ssl)

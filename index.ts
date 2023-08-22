@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure from "@pulumi/azure-native";
-import * as dbforpostgresql from "@pulumi/azure-native/dbforpostgresql/v20210601";
+import * as dbforpostgresql from "@pulumi/azure-native/dbforpostgresql/v20221201";
 import * as random from "@pulumi/random";
 
 const config = new pulumi.Config("example");
@@ -27,9 +27,9 @@ const postgres = new dbforpostgresql.Server("postgres", {
     backup: {
         backupRetentionDays: 7,
     },
-    // see az postgres flexible-server list-skus --output table --location northeurope
-    // see https://docs.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2021-06-01/flexibleservers#sku
-    // see https://azure.microsoft.com/en-us/pricing/details/postgresql/server/
+    // see az postgres flexible-server list-skus --location northeurope
+    // see https://learn.microsoft.com/en-us/azure/templates/microsoft.dbforpostgresql/2022-12-01/flexibleservers#sku
+    // see https://azure.microsoft.com/en-us/pricing/details/postgresql/flexible-server/
     sku: {
         tier: "GeneralPurpose",
         name: "Standard_D2ds_v4", // 2 vCore. 8 GiB RAM.
